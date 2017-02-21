@@ -17,13 +17,12 @@ public class Artist implements Serializable{
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @JsonView(View.Basic.class)
+    @JsonView({ View.Basic.class  } )
     private Long id;
 
     @JsonView(View.Basic.class)
     private String name;
 
-    @JsonView(View.Basic.class)
     private String normalizedName;
 
     @JsonView(View.Basic.class)

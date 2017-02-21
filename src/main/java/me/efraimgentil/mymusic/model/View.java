@@ -6,6 +6,7 @@ package me.efraimgentil.mymusic.model;
 public class View {
 
     public interface Basic{};
-    public interface All{};
+    public interface All extends Basic{};
+    public interface WithArtist extends Basic{};
 
 }

@@ -27,7 +27,7 @@ public class Album implements Serializable {
 
     private String normalizedName;
 
-    @JsonManagedReference
+    @JsonView( { View.WithArtist.class  })
     @ManyToOne
     @JoinColumn(name="artist_id")
     private Artist artist;

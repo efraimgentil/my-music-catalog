@@ -4,11 +4,9 @@ import com.fasterxml.jackson.annotation.JsonView;
 import me.efraimgentil.mymusic.model.Album;
 import me.efraimgentil.mymusic.model.View;
 import me.efraimgentil.mymusic.repository.AlbumRepository;
+import me.efraimgentil.mymusic.util.NormalizerUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -22,10 +20,20 @@ public class AlbumController {
     @Autowired
     AlbumRepository repository;
 
+    @Autowired
+    NormalizerUtil normalizer;
+
     @JsonView(View.Basic.class)
     @RequestMapping(value = {  "/{artistId}" , "/{artistId}/" } , method = RequestMethod.GET)
     public List<Album> albumsByArtist( @PathVariable("artistId") Long artistId ){
         return repository.findAllByArtistId( artistId );
+    }
+
+    @JsonView(View.WithArtist.class)
+    @RequestMapping(value = {  "/search" , "/search/"  } , method = RequestMethod.GET)
+    public List<Album> searchAlbum( @RequestParam(value = "filter" , required =  true ) String filter ){
+        filter = normalizer.normalize(filter);
+        return repository.findByNormalizedNameLike(filter);
     }
 
     /*@JsonView(ArtistView.All.class)
