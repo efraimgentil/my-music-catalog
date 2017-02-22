@@ -1,6 +1,7 @@
 package me.efraimgentil.mymusic.controller;
 
 import com.fasterxml.jackson.annotation.JsonView;
+import me.efraimgentil.mymusic.model.Album;
 import me.efraimgentil.mymusic.model.Artist;
 import me.efraimgentil.mymusic.model.View;
 import me.efraimgentil.mymusic.repository.ArtistRepository;
@@ -10,6 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -33,8 +35,14 @@ public class ArtistController {
 
     @JsonView(View.All.class)
     @RequestMapping(value = { "/{id}/" , "/{id}" } , method = RequestMethod.GET)
-    public Artist artists(@PathVariable("id") Long id  ){
+    public Artist artist(@PathVariable("id") Long id){
         return repository.findOne(id);
+    }
+
+    @JsonView(View.Basic.class)
+    @RequestMapping(value = {  "/{id}/albums" , "/{id}/albums/" } , method = RequestMethod.GET)
+    public List<Album> artistAlbums( @PathVariable("id") Long artistId ){
+        return new ArrayList<>( artist(artistId).getAlbums() );
     }
 
     @JsonView(View.Basic.class)

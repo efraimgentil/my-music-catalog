@@ -6,6 +6,7 @@ import me.efraimgentil.mymusic.util.NormalizerUtil;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 
@@ -22,27 +23,17 @@ import static org.mockito.Mockito.*;
 public class AlbumControllerTest {
 
     AlbumController controller;
-    AlbumRepository repository;
-    NormalizerUtil normalizer;
+    @Mock AlbumRepository repository;
+    @Mock  NormalizerUtil normalizer;
 
     @Before
     public void setUp(){
         controller = new AlbumController();
-        controller.repository = repository = mock(AlbumRepository.class );
-        controller.normalizer = normalizer = mock(NormalizerUtil.class );
+        controller.repository = repository;
+        controller.normalizer = normalizer;
     }
 
-    @Test
-    public void callFindByArtistFromTheRepository(){
-        Long artistId = 1L;
-        List<Album> albums = new ArrayList<>();
-        when( repository.findAllByArtistId( anyLong() ) ).thenReturn( albums );
 
-        List<Album> result = controller.albumsByArtist(artistId);
-
-        verify( repository , times(1) ).findAllByArtistId( 1L );
-        assertThat( result ).isSameAs( albums );
-    }
 
     @Test
     public void normalizeTheFilterBeforeSearching(){
@@ -52,7 +43,7 @@ public class AlbumControllerTest {
 
         List<Album> result = controller.searchAlbum( filter );
 
-        verify( repository , times(1) ).findByNormalizedNameLike( normalizedFilter );
+        verify(repository, times(1)).findByNormalizedNameLike(normalizedFilter);
     }
 
 }

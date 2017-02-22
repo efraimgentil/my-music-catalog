@@ -24,9 +24,9 @@ public class AlbumController {
     NormalizerUtil normalizer;
 
     @JsonView(View.Basic.class)
-    @RequestMapping(value = {  "/{artistId}" , "/{artistId}/" } , method = RequestMethod.GET)
-    public List<Album> albumsByArtist( @PathVariable("artistId") Long artistId ){
-        return repository.findAllByArtistId( artistId );
+    @RequestMapping(value = {  "/{albumId}" , "/{albumId}/" } , method = RequestMethod.GET)
+    public Album album( @PathVariable("albumId") Long artistId ){
+        return repository.findOne( artistId );
     }
 
     @JsonView(View.WithArtist.class)
@@ -38,7 +38,7 @@ public class AlbumController {
 
     /*@JsonView(ArtistView.All.class)
     @RequestMapping(value = { "/{id}/" , "/{id}" } , method = RequestMethod.GET)
-    public Artist artists(@PathVariable("id") Long id  ){
+    public Artist artist(@PathVariable("id") Long id  ){
         return repository.findOne(id);
     }*/
 
