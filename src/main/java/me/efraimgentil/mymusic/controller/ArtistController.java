@@ -9,6 +9,7 @@ import me.efraimgentil.mymusic.util.NormalizerUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -19,6 +20,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping(value = "/artist")
+@Transactional
 public class ArtistController {
 
     @Autowired
@@ -33,6 +35,7 @@ public class ArtistController {
         return repository.findAll( new PageRequest( page , 10) );
     }
 
+    @Transactional
     @JsonView(View.All.class)
     @RequestMapping(value = { "/{id}/" , "/{id}" } , method = RequestMethod.GET)
     public Artist artist(@PathVariable("id") Long id){

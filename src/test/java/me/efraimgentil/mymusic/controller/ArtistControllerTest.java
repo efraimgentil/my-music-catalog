@@ -51,18 +51,6 @@ public class ArtistControllerTest {
         verify( repository , times(1) ).findAll( new PageRequest( page  , 10 ) );
     }
 
-/*    @Test
-    public void callFindByArtistFromTheRepository(){
-        Long artistId = 1L;
-        List<Album> albums = new ArrayList<>();
-        when( repository.findAllByArtistId( anyLong() ) ).thenReturn( albums );
-
-        List<Album> result = controller.albumsByArtist(artistId);
-
-        verify( repository , times(1) ).findAllByArtistId( 1L );
-        assertThat( result ).isSameAs( albums );
-    }*/
-
     @Test
     public void getArtistById(){
         Long artistId = 1L;

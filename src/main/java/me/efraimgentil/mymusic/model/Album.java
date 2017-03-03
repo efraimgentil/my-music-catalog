@@ -17,12 +17,12 @@ public class Album implements Serializable {
 
     public static String NO_ALBUM = "noalbum";
 
-    @JsonView({ View.All.class , View.Basic.class })
+    @JsonView({  View.Basic.class })
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @JsonView( { View.All.class , View.Basic.class })
+    @JsonView( {  View.Basic.class })
     private String name;
 
     private String normalizedName;

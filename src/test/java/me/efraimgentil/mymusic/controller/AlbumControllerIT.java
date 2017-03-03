@@ -22,7 +22,8 @@ import static org.assertj.core.api.Assertions.*;
  * Created by efraimgentil on 21/02/17.
  */
 @RunWith(SpringRunner.class )
-@SpringBootTest(classes = CatalogApplication.class , webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest(classes = CatalogApplication.class
+        , webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestPropertySource(locations="classpath:test.properties")
 //@AutoConfigureTestDatabase
 public class AlbumControllerIT {
@@ -48,16 +49,23 @@ public class AlbumControllerIT {
     @Test
     @Sql( scripts = "/sampledata/album.sql" , executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql( scripts = "/sampledata/remove_album.sql" , executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
-    public void returnTheAlbumListOfAlbumsWithTheNameLikeTheFilter() throws IOException {
+    public void returnTheAlbumListOfAlbumsAndTheArtistWithTheNameLikeTheFilter() throws IOException {
         String forObject = restTemplate.getForObject("/album/search?filter=Dark side", String.class);
 
-        System.out.println("forObject = " + forObject);
         JsonNode node = mapper.readTree(forObject);
         assertThat( node.isArray() ).isTrue();
+        assertThat( forObject ).isEqualTo("[{\"id\":2,\"name\":\"Dark side of the moon\",\"artist\":{\"id\":1,\"name\":\"Rangom GUY\"}}]");
+    }
 
-        /*assertThat(node.has("id")).isTrue();
-        assertThat(node.has("name")).isTrue();
-        assertThat( forObject ).isEqualTo("{\"id\":1,\"name\":\"Random album name\"}");*/
+    @Test
+    @Sql( scripts = "/sampledata/album.sql" , executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql( scripts = "/sampledata/remove_album.sql" , executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+    public void returnEmptyArrayIfDoesnotFindAnyAlbumWithTheNameLikeTheFilter() throws IOException {
+        String forObject = restTemplate.getForObject("/album/search?filter=HuehueHueBRBR", String.class);
+
+        JsonNode node = mapper.readTree(forObject);
+        assertThat( node.isArray() ).isTrue();
+        assertThat( forObject ).isEqualTo("[]");
     }
 
 }

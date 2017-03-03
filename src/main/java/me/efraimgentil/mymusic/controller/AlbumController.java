@@ -36,10 +36,4 @@ public class AlbumController {
         return repository.findByNormalizedNameLike(filter);
     }
 
-    /*@JsonView(ArtistView.All.class)
-    @RequestMapping(value = { "/{id}/" , "/{id}" } , method = RequestMethod.GET)
-    public Artist artist(@PathVariable("id") Long id  ){
-        return repository.findOne(id);
-    }*/
-
 }
