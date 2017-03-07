@@ -1,16 +1,16 @@
 
 INSERT INTO ARTIST(id , name ,normalized_name ) VALUES ( 1 , 'Rangom GUY' , 'randomguy');
-INSERT INTO ARTIST(id , name ) VALUES ( 2 , 'Mario');
-INSERT INTO ARTIST(id , name ) VALUES ( 3 , 'Luigi');
-INSERT INTO ARTIST(id , name ) VALUES ( 4 , 'Peach');
-INSERT INTO ARTIST(id , name ) VALUES ( 5 , 'Toad');
-INSERT INTO ARTIST(id , name ) VALUES ( 6 , 'Koppa');
-INSERT INTO ARTIST(id , name ) VALUES ( 7 , 'Kamus');
-INSERT INTO ARTIST(id , name ) VALUES ( 8 , 'Alucard');
-INSERT INTO ARTIST(id , name ) VALUES ( 9 , 'Richard');
-INSERT INTO ARTIST(id , name ) VALUES ( 10 , 'Maria');
-INSERT INTO ARTIST(id , name ) VALUES ( 11 , 'Link');
-INSERT INTO ARTIST(id , name ) VALUES ( 12 , 'Zelda');
+INSERT INTO ARTIST(id , name ,normalized_name ) VALUES ( 2 , 'Mario' , 'mario');
+INSERT INTO ARTIST(id , name ,normalized_name ) VALUES ( 3 , 'Luigi' , 'luigi');
+INSERT INTO ARTIST(id , name ,normalized_name ) VALUES ( 4 , 'Peach' , 'peach');
+INSERT INTO ARTIST(id , name ,normalized_name ) VALUES ( 5 , 'Toad' , 'toad');
+INSERT INTO ARTIST(id , name ,normalized_name ) VALUES ( 6 , 'Koppa' , 'koppa');
+INSERT INTO ARTIST(id , name ,normalized_name ) VALUES ( 7 , 'Kamus' , 'kamus');
+INSERT INTO ARTIST(id , name ,normalized_name ) VALUES ( 8 , 'Alucard' , 'alucard');
+INSERT INTO ARTIST(id , name ,normalized_name ) VALUES ( 9 , 'Richard' , 'richard');
+INSERT INTO ARTIST(id , name ,normalized_name ) VALUES ( 10 , 'Maria' , 'maria');
+INSERT INTO ARTIST(id , name ,normalized_name ) VALUES ( 11 , 'Link' , 'link');
+INSERT INTO ARTIST(id , name ,normalized_name ) VALUES ( 12 , 'Zelda' , 'zelda');
 
 
 INSERT INTO album(id , name , normalized_name , artist_id  )

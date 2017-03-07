@@ -28,6 +28,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 @RunWith(SpringRunner.class )
 @SpringBootTest(classes = CatalogApplication.class , webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestPropertySource(locations="classpath:test.properties")
+@Sql( scripts = "/sampledata/artist.sql" , executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+@Sql( scripts = "/sampledata/remove_artist.sql" , executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
 public class ArtistControllerIT {
 
     @Autowired
@@ -40,8 +42,6 @@ public class ArtistControllerIT {
     ArtistRepository re;
 
     @Test
-    @Sql( scripts = "/sampledata/artist.sql" , executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql( scripts = "/sampledata/remove_artist.sql" , executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void returnAPageWith10RowsOfAllAvailableArtists() throws IOException {
         String forObject = restTemplate.getForObject("/artist", String.class);
 
@@ -63,19 +63,48 @@ public class ArtistControllerIT {
     }
 
     @Test
-    @Sql( scripts = "/sampledata/artist.sql" , executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql( scripts = "/sampledata/remove_artist.sql" , executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void returnTheArtisAndItsAlbuns() throws IOException {
 
         String forObject = restTemplate.getForObject("/artist/1", String.class);
 
-        System.out.println( forObject );
         JsonNode node = mapper.readTree(forObject);
         assertThat(node.has("id")).isTrue();
         assertThat(node.has("name")).isTrue();
         assertThat(node.has("normalizedName")).isFalse();
         assertThat(node.has("albums")).isTrue();
+        assertThat( forObject ).isEqualTo(
+        "{\"id\":1,\"name\":\"Rangom GUY\",\"albums\":[{\"id\":2,\"name\":\"Random 2\"},{\"id\":1,\"name\":\"Random album name\"}]}"
+        );
     }
 
+    @Test
+    public void returnTheAlbunsOfAnArtist() throws IOException {
+
+        String json = restTemplate.getForObject("/artist/2/albums", String.class);
+
+        JsonNode node = mapper.readTree(json);
+        assertThat(node.isArray()).isTrue();
+        assertThat(json).isEqualTo("[{\"id\":3,\"name\":\"Dark side of the moon\"}]");
+    }
+
+    @Test
+    public void returnEmptyArrayIfTheArtistDoesntHaveAlbums() throws IOException {
+
+        String json = restTemplate.getForObject("/artist/3/albums", String.class);
+
+        JsonNode node = mapper.readTree(json);
+        assertThat(node.isArray()).isTrue();
+        assertThat(json).isEqualTo("[]");
+    }
+
+    @Test
+    public void returnTheArtistWithTheNormalizedNameOfTheFilter() throws IOException {
+        String filter = "mari";
+
+        String json = restTemplate.getForObject("/artist/search?filter=" + filter , String.class);
+        JsonNode node = mapper.readTree( json );
+        assertThat(node.isArray()).isTrue();
+        assertThat(json).isEqualTo("[{\"id\":2,\"name\":\"Mario\"},{\"id\":10,\"name\":\"Maria\"}]");
+    }
 
 }
