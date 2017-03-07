@@ -1,5 +1,6 @@
 package me.efraimgentil.mymusic.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonView;
 
 import javax.persistence.*;
@@ -32,6 +33,7 @@ public class Artist implements Serializable{
     @OneToMany(mappedBy = "artist" , cascade = CascadeType.ALL)
     private Set<Album> albums = new LinkedHashSet<>();
 
+    @JsonIgnore
     public Album getNoAlbum(){
         for( Album a : albums ){
             if( Album.NO_ALBUM.equals(a.getNormalizedName()) ){
@@ -41,6 +43,7 @@ public class Artist implements Serializable{
         return null;
     }
 
+    @JsonIgnore
     public boolean hasNoAlbum(){
         for( Album a : albums ){
             if( Album.NO_ALBUM.equals(a.getNormalizedName()) ){
@@ -50,6 +53,7 @@ public class Artist implements Serializable{
         return false;
     }
 
+    @JsonIgnore
     public void addAlbum(Album album ){
         album.setArtist( this );
         albums.add( album );

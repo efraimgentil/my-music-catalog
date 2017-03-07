@@ -67,7 +67,7 @@ public class ArtistControllerIT {
     @Sql( scripts = "/sampledata/remove_artist.sql" , executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void returnTheArtisAndItsAlbuns() throws IOException {
 
-        String forObject = restTemplate.getForObject("/artist/2", String.class);
+        String forObject = restTemplate.getForObject("/artist/1", String.class);
 
         System.out.println( forObject );
         JsonNode node = mapper.readTree(forObject);

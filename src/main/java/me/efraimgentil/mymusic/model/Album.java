@@ -59,7 +59,7 @@ public class Album implements Serializable {
 
         Album album = (Album) o;
 
-        if (!artist.equals(album.artist)) return false;
+        if (!artistId.equals(album.artistId)) return false;
         if (!normalizedName.equals(album.normalizedName)) return false;
 
         return true;
@@ -68,7 +68,7 @@ public class Album implements Serializable {
     @Override
     public int hashCode() {
         int result = normalizedName.hashCode();
-        result = 31 * result + artist.hashCode();
+        result = 31 * result + artistId.hashCode();
         return result;
     }
 
