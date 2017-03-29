@@ -55,13 +55,96 @@
 	</dependencies>
 
 	<build>
+
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
+
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>build-helper-maven-plugin</artifactId>
+				<version>1.9.1</version>
+				<executions>
+					<execution>
+						<id>add-test-source</id>
+						<phase>generate-test-sources</phase>
+						<goals>
+							<goal>add-test-source</goal>
+						</goals>
+						<configuration>
+							<sources>
+								<source>test/unit</source>
+								<source>test/integration</source>
+								<source>test/acceptance</source>
+							</sources>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>2.12</version>
+				<configuration>
+					<testSourceDirectory>test/unit</testSourceDirectory>
+				</configuration>
+			</plugin>
+			<plugin>
+				<!-- to run directly: mvn failsafe:integration-test -->
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-failsafe-plugin</artifactId>
+				<version>2.19.1</version>
+				<configuration>
+					<testSourceDirectory>test/integration</testSourceDirectory>
+				</configuration>
+				<!-- execution below can be used, if tests are needed on
+                    mvn:integration-test -->
+				<executions>
+					<execution>
+						<goals>
+							<goal>integration-test</goal>
+							<goal>verify</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>
 	</build>
+
+	<profiles>
+		<profile>
+			<id>acceptance-test</id>
+			<build>
+				<plugins>
+					<plugin>
+						<!-- to run directly: mvn failsafe:integration-test -P acceptance-test -->
+						<artifactId>maven-failsafe-plugin</artifactId>
+						<version>2.12</version>
+						<configuration>
+							<testSourceDirectory>test/acceptance</testSourceDirectory>
+							<includes>
+								<include>**/*Acceptance.java</include>
+							</includes>
+							<excludes>
+								<exclude>**/*IT.java</exclude>
+								<exclude>**/*Test.java</exclude>
+							</excludes>
+						</configuration>
+						<executions>
+							<execution>
+								<goals>
+									<goal>integration-test</goal>
+									<goal>verify</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
 
 
 </project>
